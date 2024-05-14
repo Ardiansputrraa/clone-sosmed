@@ -140,6 +140,7 @@ def save_img():
             new_doc["profile_pic"] = filename
             new_doc["profile_pic_real"] = file_path
         db.users.update_one({"username": payload["id"]}, {"$set": new_doc})
+        db.posts.update_many({"username": payload["id"]}, {"$set": new_doc})
         return jsonify({"result": "success", "msg": "Profile updated!"})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
